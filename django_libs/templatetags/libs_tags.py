@@ -3,7 +3,7 @@ import datetime
 import importlib
 
 from django import template
-from django.template.base import TOKEN_BLOCK, TOKEN_VAR
+from django.template.base import TokenType
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
@@ -501,14 +501,14 @@ def verbatim(parser, token):
         token = parser.tokens.pop(0)
         if token.contents == 'endverbatim':
             break
-        if token.token_type == TOKEN_VAR:
+        if token.token_type == TokenType.VAR:
             text.append('{{ ')
-        elif token.token_type == TOKEN_BLOCK:
+        elif token.token_type == TokenType.BLOCK:
             text.append('{%')
         text.append(token.contents)
-        if token.token_type == TOKEN_VAR:
+        if token.token_type == TokenType.VAR:
             text.append(' }}')
-        elif token.token_type == TOKEN_BLOCK:
+        elif token.token_type == TokenType.BLOCK:
             if not text[-1].startswith('='):
                 text[-1:-1] = [' ']
             text.append(' %}')
